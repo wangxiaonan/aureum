@@ -1,0 +1,32 @@
+http://127.0.0.1:8000/admin   用户名:admin 密码:admin123456
+
+
+表：rule
+
+-- auto-generated definition
+CREATE TABLE rule
+(
+  id          BIGINT AUTO_INCREMENT
+  COMMENT '主键'
+    PRIMARY KEY,
+  uuid        VARCHAR(32)                        NOT NULL
+  COMMENT '审核人',
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+  COMMENT '创建时间',
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+  COMMENT '更新时间',
+  rule_name   VARCHAR(50) DEFAULT ''             NOT NULL
+  COMMENT '规则名称',
+  CONSTRAINT risk_rule_uuid_uindex
+  UNIQUE (uuid)
+)
+  COMMENT '规则';
+
+  步骤
+
+  1  数据库建表
+  2  用 pycharm 打开工程  修改数据库配置
+  3  pycharm没有Django插件下载插件,服务上没有mysql驱动下载驱动并安装 此项目适用python3
+  4  启动即可访问  简单的查询 删除功能
+
+  注意：此项目适合初学者  。。。因为本人也是初学者

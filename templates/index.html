@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询</title>
+
+</head>
+<body>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+<script>
+    function del(id) {
+        var param={"id": id};
+       $.ajax({
+            type: "POST",      //data 传送数据类型。post 传递
+            dataType: 'json', // 返回数据的数据类型json
+            contentType: "application/json; charset=utf-8",
+            {#headers:{'X-CSRFToken': token},#}
+            url: "/delRuleById",  // yii 控制器/方法
+            data:  JSON.stringify(param),  //传送的数据
+            error:function(){
+                alert("数据传输错误");
+            },success: function (data) {
+                sel()
+            }
+        })
+    }
+
+    function sel() {
+        var selParams = $("#selParams").val();
+        var param={"rule_name": selParams};
+        {#var token = $.cookie('csrftoken');#}
+        $.ajax({
+            type: "POST",      //data 传送数据类型。post 传递
+            dataType: 'json', // 返回数据的数据类型json
+            contentType: "application/json; charset=utf-8",
+            {#headers:{'X-CSRFToken': token},#}
+            url: "/selRule",  // yii 控制器/方法
+            data:  JSON.stringify(param),  //传送的数据
+            error:function(){
+                alert("数据传输错误");
+            },success: function (data) {
+                var _html = '';
+                data.forEach(function (value) {
+                    _html += '<tr>' +
+                                '<td>' + value.id + '</td>' +
+                                '<td>' + value.rule_name + '</td>' +
+                                '<td>' + value.update_time + '</td>' +
+                                '<td>' + value.create_time + '</td>' +
+                                '<td><button class="del" value="' + value.id + '">删除</button></td>' +
+                            '</tr>'
+
+                })
+                if(data.length < 1){
+                    _html = '暂无数据';
+                }
+                $('#tbody').html(_html);
+
+                $('.del').click(function () {
+                    del(this.value);
+                });
+
+            }
+        })
+    }
+</script>
+
+ <input type="text" id="selParams" name="selParams" value=""/>
+ <input type="button" value="规则名称查询" onclick="sel()">
+
+<table border="1">
+
+    <thead>
+    <td>id</td>
+    <td>rule_name</td>
+    <td>update_time</td>
+    <td>create_time</td>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+
+
+</table>
+</body>
+</html>
